@@ -7,7 +7,7 @@
 
 # Site settings
 title: 肖毅的IT奇妙探险
-brief-intro: Coding is life
+brief-intro: Java Back-End Coder
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://xiaoy-jojo.github.io/" # the base hostname & protocol for your site
 
