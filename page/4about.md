@@ -11,9 +11,10 @@ type: page
 
 ## Introduction
 
-<iframe src="https://github.com/XiaoY-JOJO/ImageRepository/blob/master/blog.jpg" style="border: 0;height: 142px;width: 200px;overflow: hidden;" frameBorder="0"></iframe>
+![](https://github.com/XiaoY-JOJO/ImageRepository/blob/master/blog.jpg)
 
-这里有个人学习小结，专题知识整理，LeetCode多思路题解，也有生活的记录和规划，写博客的初衷是勉励自己在学习的过程中不断总结，养成自律的习惯。对于博客内容，欢迎提出质疑和指正。来着皆是朋友，有朋自远方来，不亦乐乎？
+
+这里有个人学习小结，专题知识整理，LeetCode多思路题解，也有生活的记录和规划，写博客的初衷是勉励自己在学习的过程中不断总结，养成自律的习惯。对于博客内容，欢迎提出质疑和指正。来者皆是朋友，有朋自远方来，不亦乐乎？
 
 
 闲暇之余，喜欢听国内外经典老歌，爱看热血番，偶尔也会捣鼓些吃的。
