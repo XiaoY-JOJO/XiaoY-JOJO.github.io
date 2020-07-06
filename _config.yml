@@ -27,14 +27,14 @@ description_footer: 肖毅的IT奇妙探险
 # comments
 # two ways to comment, only choose one, and use your own short name
 # 两种评论插件，选一个就好了，使用自己的 short_name
-comments:
-	gitalk: true
-  	gitalk_clientID: 'f214f9bb178964db3049'
-  	gitalk_Secret: '608efc569c2b07b52d213a67bb073ca72ae56456'
-  	gitalk_repo: 'XiaoY-JOJO.github.io'
-  	gitalk_owner: 'XiaoY-JOJO'
-  	gitalk_admin: 'XiaoY-JOJO'
-  	distractionFreeMode: true
+# comments:
+# 	gitalk: true
+#   	gitalk_clientID: 'f214f9bb178964db3049'
+#   	gitalk_Secret: '608efc569c2b07b52d213a67bb073ca72ae56456'
+#   	gitalk_repo: 'XiaoY-JOJO.github.io'
+#   	gitalk_owner: 'XiaoY-JOJO'
+#   	gitalk_admin: 'XiaoY-JOJO'
+#   	distractionFreeMode: true
 
 # statistic analysis 统计代码
 # 百度统计 id，将统计代码替换为自己的百度统计id，即
