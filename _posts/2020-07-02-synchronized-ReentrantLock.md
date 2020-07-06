@@ -25,6 +25,17 @@ synchronized和ReentrantLock的区别是什么？ReentrantLock的加锁和释放
 4. ReentrantLock 只能修饰代码块，而 synchronized 可以用于修饰方法、修饰代码块等
 5. ReentrantLock 需要手动加锁和释放锁，如果忘记释放锁，则会造成资源被永久占用，而 synchronized 无需手动释放锁
 6. ReentrantLock可以知道是否成功获得了锁，而 synchronized却不行
+7. synchronized一定要按照嵌套的顺序加解锁
+8. synchronized为不可中断锁，ReentrantLock为可中断锁
+
+### 相同点
+1. 都可以保证可见性，即当一个线程修改了共享变量后，其他线程能够立即得知这个修改。
+2. 都拥有可重入的特性。
+
+### synchronized分析
+- synchronized 代码块相较于ReentrantLock实际上多了 一个monitorenter 和 两个monitorexit 指令，monitorenter 指令被插入到同步代码块的开始位置，而 monitorexit 需要插入到方法正常结束处和异常处两个地方，这样就可以保证抛异常的情况下也能释放锁。、
+- 把执行 monitorenter 理解为加锁，执行 monitorexit 理解为释放锁，每个对象维护着一个记录着被锁次数的计数器，未被锁定的对象的该计数器为 0。
+- synchronized修饰的方法会有一个叫作 ACC_SYNCHRONIZED 的 flag 修饰符，来表明它是同步方法。
 
 ### ReentrantLock 源码分析
 ReentrantLock 是通过 lock() 来获取锁，并通过 unlock() 释放锁
@@ -66,7 +77,7 @@ public final void acquire(int arg) {
 	// 首先尝试获取锁，如果成功则直接返回
     if (!tryAcquire(arg) && 
 
-	// 如果失败则进行如下操作,acquireQueued()尝试获取到锁，直如果成功接退出
+	// 如果失败则进行如下操作,acquireQueued()尝试获取到锁，如果成功直接退出
         acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
 
 	//如果两者都失败，则调用selfInterrupt()中断当前线程
@@ -83,7 +94,9 @@ protected final boolean tryAcquire(int acquires) {
     final Thread current = Thread.currentThread();
     int c = getState();
     if (c == 0) {
-        // 公平锁比非公平锁多了一行代码 !hasQueuedPredecessors() 
+
+        // 公平锁比非公平锁多了一行代码 !hasQueuedPredecessors() ，这是两者的核心区别，判断等待队列是否已经存在线程，若存在，则公平锁的线程不再尝试获取锁
+
         if (!hasQueuedPredecessors() &&
             compareAndSetState(0, acquires)) { //尝试获取锁
             setExclusiveOwnerThread(current); // 获取成功，标记被抢占
@@ -198,3 +211,8 @@ protected final boolean tryRelease(int releases) {
 }
 ```
 在 tryRelease 方法中，会先判断当前的线程是不是占用锁的线程，如果不是的话，则会抛出异常；如果是的话，则先计算锁的状态值 getState() - releases 是否为 0，如果为 0，则表示可以正常的释放锁，然后清空独占的线程，最后会更新锁的状态并返回执行结果。
+
+### 两者如何选择
+1. 如果能不用最好既不使用 Lock 也不使用 synchronized，推荐优先使用工具类来加解锁。
+2. 如果 synchronized 关键字适合你的程序， 那么请尽量使用它，这样可以减少编写代码的数量，减少出错的概率。
+3. 如果特别需要 Lock 的特殊功能，比如尝试获取锁、可中断、超时功能等，才使用 Lock。
