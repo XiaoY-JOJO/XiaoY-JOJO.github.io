@@ -10,7 +10,7 @@ type: page
 {:toc}
 
 ## Introduction
-<img src="https://github.com/XiaoY-JOJO/ImageRepository/blob/master/blog.jpg?raw=true" alt="键盘" height="192" width="300"> 
+<img src="https://github.com/XiaoY-JOJO/ImageRepository/blob/master/blog.jpg?raw=true"  height="192" width="300"> 
 
 
 
