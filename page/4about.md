@@ -10,7 +10,7 @@ type: page
 {:toc}
 
 ## Introduction
-<iframe src="https://github.com/XiaoY-JOJO/ImageRepository/blob/master/blog.jpg?raw=true" style="border: 0;height: 142px;width: 200px;overflow: hidden;" frameBorder="0"></iframe>
+<img src="https://github.com/XiaoY-JOJO/ImageRepository/blob/master/blog.jpg?raw=true" alt="键盘" height="192" width="300"> 
 
 
 
