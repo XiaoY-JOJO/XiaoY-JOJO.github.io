@@ -23,3 +23,5 @@ tags: 博客 图片
 3. 第二天反复打开该页面的时候又加载失败，在网上搜寻了一些资料，最终方案为：在博客的根目录下"G:\myblog\XiaoY-JOJO.github.io"，新建一个images文件夹，专门用来存储博客中的图片，然后用markdown语法插入相对路径"/images/blog.jpg"，最终成功加载。
 
 ![](/images/insert.png)
+
+{% include comments.html %}
