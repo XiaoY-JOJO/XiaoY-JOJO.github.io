@@ -18,7 +18,7 @@ tags: Java 源码解析 String
 ## String
 
 ### 源码解析
-```
+```java
 public final class String
     implements java.io.Serializable, Comparable<String>, CharSequence {
     // 用于存储字符串的值
@@ -30,7 +30,7 @@ public final class String
 可以看出`String`内部实际存储结构为char数组,并且该数组的值不可改变
 
 #### 构造方法
-```
+```java
 //参数为string时，将该string的值和hash直接赋给新的String对象
 public String(String original) {
     this.value = original.value;
@@ -57,7 +57,7 @@ public String(StringBuilder builder) {
 
 #### 常用方法
 ##### equals()
-```
+```java
 public boolean equals(Object anObject) {
 
     if (this == anObject) {
@@ -88,7 +88,7 @@ public boolean equals(Object anObject) {
 注意：`equals()`方法传入的参数是Object类型，而不是String.
 
 ##### compareTo()
-```
+```java
 public int compareTo(String anotherString) {
     int len1 = value.length;
     int len2 = anotherString.value.length;
@@ -113,7 +113,7 @@ public int compareTo(String anotherString) {
 `compareTo()`会直接循环对比每一个元素，只要有字符不相等就返回两个字符的差值，因此只有方法返回0时表示两个String是相等的，`compareTo()`的参数只能是String类型。
 
 ##### hashCode()
-```
+```java
 public int hashCode() {
     int h = hash;
     //如果hash没有被计算过，并且字符串不为空，则进行hashCode计算
@@ -132,7 +132,7 @@ public int hashCode() {
 
 ##### concat()
 
-```
+```java
 	//字符串拼接
 	public String concat(String str) {
 

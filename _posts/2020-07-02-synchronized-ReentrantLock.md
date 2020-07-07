@@ -41,7 +41,7 @@ synchronized和ReentrantLock的区别是什么？ReentrantLock的加锁和释放
 ReentrantLock 是通过 lock() 来获取锁，并通过 unlock() 释放锁
 
 #### 加锁过程
-```
+```java
 Lock lock = new ReentrantLock();
 try {
     // 加锁
@@ -55,7 +55,7 @@ try {
 ReentrantLock中的lock()是通过sync.lock()实现的，但Sync类中的lock()是一个抽象方法，需要子类NonfairSync或FairSync去实现.
 
 1. lock()
-```
+```java
 //NonfairSync
 final void lock() {
     if (compareAndSetState(0, 1))
@@ -72,7 +72,7 @@ final void lock() {
 非公平锁中compareAndSetState()，该方法是尝试将 state 值由0置换为1，如果设置成功的话，则说明当前没有其他线程持有该锁，可直接占用该锁，否则需要通过acquire()排队获取。
 
 2. acquire()
-```
+```java
 public final void acquire(int arg) {
 	// 首先尝试获取锁，如果成功则直接返回
     if (!tryAcquire(arg) && 
@@ -89,7 +89,7 @@ public final void acquire(int arg) {
 - 如果获取锁失败，则调用 addWaiter方法把线程包装成Node对象，同时放入到队列中，acquireQueued方法才会尝试获取锁，如果获取失败，则此节点会被挂起
 
 3. tryAcquire()
-```
+```java
 protected final boolean tryAcquire(int acquires) {
     final Thread current = Thread.currentThread();
     int c = getState();
@@ -118,7 +118,7 @@ protected final boolean tryAcquire(int acquires) {
 - hasQueuedPredecessors()用来查看队列中是否有比它等待时间更久的线程，如果没有，就尝试一下是否能获取到锁，如果获取成功，则标记为已经被占用
 
 4. addWaiter()
-```
+```java
     private Node addWaiter(Node mode) {
         Node node = new Node(Thread.currentThread(), mode);
         // Try the fast path of enq; backup to full enq on failure
@@ -137,7 +137,7 @@ protected final boolean tryAcquire(int acquires) {
 创建一个入队node为当前线程，Node.EXCLUSIVE 是独占锁,Node.SHARED是共享锁。
 
 5. acquireQueued()
-```
+```java
 /**
  * 队列中的线程尝试获取锁，失败则会被挂起
  */
@@ -173,7 +173,7 @@ final boolean acquireQueued(final Node node, int arg) {
 - acquireQueue()完成了两件事情：一是如果当前节点的前驱节点是头节点并且能够获得锁，当前线程成功获取到锁并退出；二是如果获取锁失败，就将当前线程设为取消状态，并阻塞当前线程。
 
 #### 释放锁过程
-```
+```java
 public void unlock() {
     sync.release(1);
 }
@@ -192,7 +192,7 @@ public final boolean release(int arg) {
 ```
 先调用 tryRelease 方法尝试释放锁，如果释放成功，则查看头结点的状态是否为 SIGNAL，如果是，则唤醒头结点的下个节点关联的线程；如果释放锁失败，则返回 false。
 
-```
+```java
 /**
  * 尝试释放当前线程占有的锁
  */

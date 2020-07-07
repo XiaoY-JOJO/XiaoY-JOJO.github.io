@@ -23,7 +23,7 @@ tags: Java 源码解析 线程池
 2. CachedThreadPool 和 ScheduledThreadPool：允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM
 
 ### 核心参数
-```
+```java
 public ThreadPoolExecutor(int corePoolSize,
                           int maximumPoolSize,
                           long keepAliveTime,
@@ -59,7 +59,7 @@ public ThreadPoolExecutor(int corePoolSize,
 4. CallerRunsPolicy，相对而言它就比较完善了，当有新任务提交后，如果线程池没被关闭且没有能力执行，则把这个任务交于提交任务的线程执行，也就是谁提交任务，谁就负责执行任务。
 
 #### 执行方法execute()
-```
+```java
 public void execute(Runnable command) {
     if (command == null)
         throw new NullPointerException();
@@ -95,7 +95,7 @@ public void execute(Runnable command) {
 
 #### addWorker()
 addWorker()主要负责创建新线程并执行任务、
-```
+```java
 private boolean addWorker(Runnable firstTask, boolean core) {
        // CAS更新线程池数量
         retry:
@@ -166,7 +166,7 @@ private boolean addWorker(Runnable firstTask, boolean core) {
 addWorker(Runnable firstTask, boolean core)的两个参数，firstTask表示任务，core：是否可以创建线程的阈值，为true表示使用 corePoolSize 作为阀值，false 则表示使用 maximumPoolSize 作为阀值。
 
 #### Worker类
-```
+```java
  private final class Worker
          extends AbstractQueuedSynchronizer
          implements Runnable{
@@ -184,7 +184,7 @@ addWorker(Runnable firstTask, boolean core)的两个参数，firstTask表示任�
 ```
 从Woker类的构造方法实现可以发现：线程工厂在创建线程thread时，将Woker实例本身this作为参数传入，当执行start方法启动线程thread时，本质是执行了Worker的runWorker方法。
 
-```
+```java
 final void runWorker(Worker w) {
     Thread wt = Thread.currentThread();
     Runnable task = w.firstTask;
@@ -265,7 +265,7 @@ runWorker方法是线程池执行任务的核心：
 8. 解锁操作，然后循环执行2-8
 
 #### submit()
-```
+```java
 // submit方法在AbstractExecutorService中的实现
 public Future<?> submit(Runnable task) {
         if (task == null) throw new NullPointerException();      
