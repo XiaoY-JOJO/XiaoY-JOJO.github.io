@@ -29,12 +29,12 @@ CopyOnWriteArrayList好像很“冷门”，但它的应用其实很广泛，是
 1. `CopyOnWrite`的含义：当容器需要被修改的时候，不直接修改当前容器，而是先将当前容器进行 Copy，复制出一个新的容器，然后修改新的容器，完成修改之后，再将原容器的引用指向新的容器。因此可以对 CopyOnWrite 容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素，也不会有修改。 CopyOnWrite 容器也是一种读写分离的思想体现，读和写使用不同的容器。
 
 2. 迭代期间可以修改容器内容
+
 ```java
 /**
 * 描述： 演示CopyOnWriteArrayList迭代期间可以修改集合的内容
 */
 public class CopyOnWriteArrayListDemo {
- 
     public static void main(String[] args) {
  
         CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>(new Integer[]{1, 2, 3});
@@ -63,6 +63,7 @@ public class CopyOnWriteArrayListDemo {
     } 
 }
 ```
+
 `CopyOnWriteArrayList`的迭代器一旦被建立之后，如果往之前的 CopyOnWriteArrayList对象中去新增元素，在迭代器中既不会显示出元素的变更情况，同时也不会报错。
 
 ### 缺点
@@ -99,7 +100,6 @@ public CopyOnWriteArrayList() {
 
 ```java
 public boolean add(E e) {
- 
     // 加锁
     final ReentrantLock lock = this.lock;
     lock.lock();
@@ -172,7 +172,7 @@ private COWIterator(Object[] elements, int initialCursor) {
     cursor = initialCursor;
     snapshot = elements;
 }
-迭代器在被构建的时候，会把当时的 elements 赋值给 snapshot，而之后的迭代器所有的操作都基于 snapshot 数组进行的
+//迭代器在被构建的时候，会把当时的 elements 赋值给 snapshot，而之后的迭代器所有的操作都基于 snapshot 数组进行的
 
 //比如next()
 public E next() {

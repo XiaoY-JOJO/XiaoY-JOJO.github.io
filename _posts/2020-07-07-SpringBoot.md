@@ -19,13 +19,14 @@ tags: Java Spring 源码解析
 ### 特性
 
 1. 更快速的构建能力：SpringBoot提供了更多的`Starters`用于快速构建业务框架，它包含了一系列可以集成到应用里面的依赖包，只需要一个依赖项就可以来启动和运行Web应用程序。
+
 ```java
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
-
 ```
+
 常见的Starter有：
 - spring-boot-starter-test
 - spring-boot-starter-web
@@ -62,6 +63,7 @@ tags: Java Spring 源码解析
 
 ### 启动流程
 Spring Boot 程序的入口是 SpringApplication.run(Application.class, args) 方法
+
 ```java
 public ConfigurableApplicationContext run(String... args) {
     // 1.创建并启动计时监控类，监控并记录Spring Boot应用启动的时间以及当前任务的名称
@@ -118,5 +120,4 @@ public ConfigurableApplicationContext run(String... args) {
         throw new IllegalStateException(var9);
     }
 }
-
 ```
