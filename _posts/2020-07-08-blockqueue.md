@@ -16,7 +16,6 @@ tags: Java 多线程 阻塞 Queue
 
 
 ### 常用的阻塞队列
-线程池内部结构主要由四部分组成：线程池管理器负责管理线程池的创建，销毁，添加任务等；工作线程负责从任务队列中获取任务并执行；任务队列作为缓冲机制；任务。
 
 #### 三组添加和移除方法
 `BlockingQueue` 中最常用的和添加、删除相关的有8 个方法，把它们分为三组，每组方法都和添加、移除元素相关。区别仅在于特殊情况：当队列满了无法添加元素，或者是队列空了无法移除元素时，不同组的方法对于这种特殊情况会有不同的处理方式。
@@ -27,7 +26,7 @@ tags: Java 多线程 阻塞 Queue
 
 
 #### LinkedBlockingQueue 
-对于 FixedThreadPool 和 SingleThreadExector 而言，它们使用的阻塞队列是容量为 Integer.MAX_VALUE 的 LinkedBlockingQueue，可以认为是无界队列。
+对于 `FixedThreadPool` 和 `SingleThreadExector` 而言，它们使用的阻塞队列是容量为 Integer.MAX_VALUE 的 LinkedBlockingQueue，可以认为是无界队列。
 #### SynchronousQueue
 - 对应的线程池是` CachedThreadPool`。线程池 CachedThreadPool 的最大线程数是 Integer 的最大值，可以理解为线程数是可以无限扩展的。
 - SynchronousQueue 最大的不同之处在于，它的容量为 0，所以没有一个地方来暂存元素，导致每次取数据都要先阻塞，直到有数据被放入
