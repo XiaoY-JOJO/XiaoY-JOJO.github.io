@@ -6,6 +6,10 @@ icon: bookmark
 type: page
 ---
 
+[关于Nginx的均衡策略](https://kaiwu.lagou.com/course/courseInfo.htm?sid=&courseId=59&lagoufrom=noapp#/detail/pc?id=1793)
+
+[接口的幂等性](https://kaiwu.lagou.com/course/courseInfo.htm?sid=&courseId=59&lagoufrom=noapp#/detail/pc?id=1791)
+
 * content
 {:toc}
 
