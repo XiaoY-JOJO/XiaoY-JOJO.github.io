@@ -54,7 +54,7 @@ try {
 ```
 ReentrantLock中的lock()是通过sync.lock()实现的，但Sync类中的lock()是一个抽象方法，需要子类NonfairSync或FairSync去实现.
 
-1. lock()
+##### lock()
 ```java
 //NonfairSync
 final void lock() {
@@ -71,7 +71,7 @@ final void lock() {
 ```
 非公平锁中compareAndSetState()，该方法是尝试将 state 值由0置换为1，如果设置成功的话，则说明当前没有其他线程持有该锁，可直接占用该锁，否则需要通过acquire()排队获取。
 
-2. acquire()
+##### acquire()
 ```java
 public final void acquire(int arg) {
 	// 首先尝试获取锁，如果成功则直接返回
@@ -83,12 +83,12 @@ public final void acquire(int arg) {
 	//如果两者都失败，则调用selfInterrupt()中断当前线程
         selfInterrupt();
 }
-
 ```
+
 - 尝试获取锁成功的话，tryAcquire(arg)会返回true，则判断语句结果为false，因此直接返回，不再进行后续操作。
 - 如果获取锁失败，则调用 addWaiter方法把线程包装成Node对象，同时放入到队列中，acquireQueued方法才会尝试获取锁，如果获取失败，则此节点会被挂起
 
-3. tryAcquire()
+##### tryAcquire()
 ```java
 protected final boolean tryAcquire(int acquires) {
     final Thread current = Thread.currentThread();
@@ -117,7 +117,7 @@ protected final boolean tryAcquire(int acquires) {
 
 - hasQueuedPredecessors()用来查看队列中是否有比它等待时间更久的线程，如果没有，就尝试一下是否能获取到锁，如果获取成功，则标记为已经被占用
 
-4. addWaiter()
+##### addWaiter()
 ```java
     private Node addWaiter(Node mode) {
         Node node = new Node(Thread.currentThread(), mode);
@@ -136,7 +136,7 @@ protected final boolean tryAcquire(int acquires) {
 ```
 创建一个入队node为当前线程，Node.EXCLUSIVE 是独占锁,Node.SHARED是共享锁。
 
-5. acquireQueued()
+##### acquireQueued()
 ```java
 /**
  * 队列中的线程尝试获取锁，失败则会被挂起
