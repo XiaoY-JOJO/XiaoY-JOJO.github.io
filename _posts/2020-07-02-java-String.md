@@ -19,38 +19,37 @@ tags: Java 源码解析 String
 
 ### 源码解析
 ```java
-public final class String
-    implements java.io.Serializable, Comparable<String>, CharSequence {
-    // 用于存储字符串的值
-    private final char value[];
-    // 缓存字符串的 hash code
-    private int hash; 
+public final class String implements java.io.Serializable, Comparable<String>, CharSequence {
+	// 用于存储字符串的值
+	private final char value[];
+	// 缓存字符串的 hash code
+	private int hash; 
 }
 ```
-可以看出`String`内部实际存储结构为char数组,并且该数组的值不可改变
+可以看出`String`内部实际存储结构为一个由`final`修饰的`char数组`，因此该数组的值不可改变
 
 #### 构造方法
 ```java
 //参数为string时，将该string的值和hash直接赋给新的String对象
 public String(String original) {
-    this.value = original.value;
-    this.hash = original.hash;
+	this.value = original.value;
+	this.hash = original.hash;
 }
 
 //传入char数组类型的参数时，调用Arrays的copyOf将数组的值赋给新对象
 public String(char value[]) {
-    this.value = Arrays.copyOf(value, value.length);
+	this.value = Arrays.copyOf(value, value.length);
 }
 
 //StringBuffer和StringBuilder类型参数都是先获取对象的值和长度，然后通过copyOf传给新对象
 public String(StringBuffer buffer) {
-    synchronized(buffer) {
-        this.value = Arrays.copyOf(buffer.getValue(), buffer.length());
-    }
+	synchronized(buffer) {
+		this.value = Arrays.copyOf(buffer.getValue(), buffer.length());
+	}
 }
 
 public String(StringBuilder builder) {
-    this.value = Arrays.copyOf(builder.getValue(), builder.length());
+	this.value = Arrays.copyOf(builder.getValue(), builder.length());
 }
 
 ```
@@ -90,24 +89,24 @@ public boolean equals(Object anObject) {
 ##### compareTo()
 ```java
 public int compareTo(String anotherString) {
-    int len1 = value.length;
-    int len2 = anotherString.value.length;
-    // 获取到两个字符串长度最短的那个 int 值
-    int lim = Math.min(len1, len2);
-    char v1[] = value;
-    char v2[] = anotherString.value;
-    int k = 0;
-    // 对比每一个字符
-    while (k < lim) {
-        char c1 = v1[k];
-        char c2 = v2[k];
-        if (c1 != c2) {
-            // 有字符不相等就返回差值
-            return c1 - c2;
-        }
-        k++;
-    }
-    return len1 - len2;
+	int len1 = value.length;
+	int len2 = anotherString.value.length;
+	// 获取到两个字符串长度最短的那个 int 值
+	int lim = Math.min(len1, len2);
+	char v1[] = value;
+	char v2[] = anotherString.value;
+	int k = 0;
+	// 对比每一个字符
+	while (k < lim) {
+		char c1 = v1[k];
+		char c2 = v2[k];
+		if (c1 != c2) {
+			// 有字符不相等就返回差值
+			return c1 - c2;
+		}
+		k++;
+	}
+	return len1 - len2;
 }
 ```
 `compareTo()`会直接循环对比每一个元素，只要有字符不相等就返回两个字符的差值，因此只有方法返回0时表示两个String是相等的，`compareTo()`的参数只能是String类型。
@@ -133,21 +132,18 @@ public int hashCode() {
 ##### concat()
 
 ```java
-	//字符串拼接
-	public String concat(String str) {
-
-	    int otherLen = str.length();
-	    if (otherLen == 0) {
-	        return this;
-	    }
-
-	    int len = value.length;  
-	    char buf[] = Arrays.copyOf(value, len + otherLen);
-
-	    //buf现在只存了this.value,通过getChars()将str.value复制到buf数组尾部
-	    str.getChars(buf, len);
-	    return new String(buf, true);
-	 }
+//字符串拼接
+public String concat(String str) {
+    int otherLen = str.length();
+    if (otherLen == 0) {
+        return this;
+    }
+    int len = value.length;  
+    char buf[] = Arrays.copyOf(value, len + otherLen);
+    //buf现在只存了this.value,通过getChars()将strvalue复制到buf数组尾部
+    str.getChars(buf, len);
+    return new String(buf, true);
+}
 ```
 
 拼接的核心是`getChars()`，而`getChars()`调用的是`System.arraycopy()`，该方法思路如下：①创建一个新长度的数组;
