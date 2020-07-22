@@ -153,14 +153,14 @@ public String concat(String str) {
 ⑤把最终的新数组，当做参数来创建一个新的String。
 
 ### 知识扩展
-1. == 和 equals 的区别
-== 对于基本数据类型来说，是用于比较 “值”是否相等的；而对于引用类型来说，是用于比较引用地址是否相同的，Object 中的 `equals()` 方法其实就是 ==，而 String 重写了 `equals()` 方法把它修改成比较两个字符串的值是否相等。
+1. `==` 和 `equals` 的区别
+- ``==` 对于基本数据类型来说，是用于比较 “值”是否相等的；而对于引用类型来说，是用于比较引用地址是否相同的，Object 中的 `equals()` 方法其实就是 ==，而 String 重写了 `equals()` 方法把它修改成比较两个字符串的值是否相等。
 
-2. 为什么用final修饰？
+2. 为什么用`final`修饰？
 - 字符串常量池的需要
-- 允许String对象缓存HashCode：字符串不变性保证了hash码的唯一性,因此可以放心地进行缓存.
-- 安全性：String被许多的Java类(库)用来当做参数,例如 网络连接地址URL,文件路径path,假若String不是固定不变的,将会引起各种安全隐患。
-- 线程安全：同一个字符串实例可以被多个线程共享，这样便不用因为线程安全问题而使用同步，字符串自己便是线程安全的。
+- 允许String对象缓存`HashCode`：字符串不变性保证了hash码的唯一性,因此可以放心地进行缓存.
+- 安全性：String被许多的Java类(库)用来当做`参数`,例如 网络连接地址URL,文件路径path,假若String不是固定不变的,将会引起各种安全隐患。
+- 线程安全：同一个字符串实例可以被多个`线程共享`，这样便不用因为线程安全问题而使用同步，字符串自己便是线程安全的。
 
 3. String 和 StringBuilder、StringBuffer 的区别
 - `String`和`StringBuilder`、`StringBuffer`底层都是char[]数组，但是String是final修饰的
@@ -169,7 +169,7 @@ public String concat(String str) {
 - StringBuffer使用了 `synchronized`来保证线程安全，所以性能不是很高
 
 4. String和JVM
-- 直接定义的String a = "a" 是储存在 常量存储区中的字符串常量池中；new String("a")是存储在堆中；
+- 直接定义的String a = "a" 是储存在常量存储区中的字符串常量池中；new String("a")是存储在堆中；
 - 常量池中相同的字符串只会有一个，但是new String()，每new一个对象就会在堆中新建一个对象，不管这个值是否相同
 - JDK 1.7 之后把永生代换成的元空间，把字符串常量池从方法区移到了 Java 堆上
 
