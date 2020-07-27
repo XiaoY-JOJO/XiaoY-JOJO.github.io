@@ -33,9 +33,9 @@ synchronized和ReentrantLock的区别是什么？ReentrantLock的加锁和释放
 2. 都拥有可重入的特性。
 
 ### synchronized分析
-- synchronized 代码块相较于ReentrantLock实际上多了 一个monitorenter 和 两个monitorexit 指令，monitorenter 指令被插入到同步代码块的开始位置，而 monitorexit 需要插入到方法正常结束处和异常处两个地方，这样就可以保证抛异常的情况下也能释放锁。、
+- synchronized 代码块相较于ReentrantLock实际上多了 一个`monitorenter` 和 两个`monitorexit` 指令，monitorenter 指令被插入到同步代码块的开始位置，而 monitorexit 需要插入到方法正常结束处和异常处两个地方，这样就可以保证抛异常的情况下也能释放锁。
 - 把执行 monitorenter 理解为加锁，执行 monitorexit 理解为释放锁，每个对象维护着一个记录着被锁次数的计数器，未被锁定的对象的该计数器为 0。
-- synchronized修饰的方法会有一个叫作 ACC_SYNCHRONIZED 的 flag 修饰符，来表明它是同步方法。
+- synchronized修饰的方法会有一个叫作 `ACC_SYNCHRONIZED` 的 flag 修饰符，来表明它是同步方法。
 
 ### ReentrantLock 源码分析
 ReentrantLock 是通过 lock() 来获取锁，并通过 unlock() 释放锁
@@ -52,7 +52,7 @@ try {
     lock.unlock();
 }
 ```
-ReentrantLock中的lock()是通过sync.lock()实现的，但Sync类中的lock()是一个抽象方法，需要子类NonfairSync或FairSync去实现.
+ReentrantLock中的lock()是通过`sync.lock()`实现的，但Sync类中的lock()是一个抽象方法，需要子类`NonfairSync`或`FairSync`去实现.
 
 ##### lock()
 ```java
@@ -69,7 +69,7 @@ final void lock() {
     acquire(1);
 }
 ```
-非公平锁中compareAndSetState()，该方法是尝试将 state 值由0置换为1，如果设置成功的话，则说明当前没有其他线程持有该锁，可直接占用该锁，否则需要通过acquire()排队获取。
+非公平锁中`compareAndSetState()`，该方法是尝试将 state 值由0置换为1，如果设置成功的话，则说明当前没有其他线程持有该锁，可直接占用该锁，否则需要通过acquire()排队获取。
 
 ##### acquire()
 ```java
@@ -85,8 +85,8 @@ public final void acquire(int arg) {
 }
 ```
 
-- 尝试获取锁成功的话，tryAcquire(arg)会返回true，则判断语句结果为false，因此直接返回，不再进行后续操作。
-- 如果获取锁失败，则调用 addWaiter方法把线程包装成Node对象，同时放入到队列中，acquireQueued方法才会尝试获取锁，如果获取失败，则此节点会被挂起
+- 尝试获取锁成功的话，`tryAcquire(arg)`会返回true，则判断语句结果为false，因此直接返回，不再进行后续操作。
+- 如果获取锁失败，则调用 `addWaiter`方法把线程包装成Node对象，同时放入到队列中，`acquireQueued`方法才会尝试获取锁，如果获取失败，则此节点会被挂起
 
 ##### tryAcquire()
 ```java
@@ -115,7 +115,7 @@ protected final boolean tryAcquire(int acquires) {
 
 ```
 
-- hasQueuedPredecessors()用来查看队列中是否有比它等待时间更久的线程，如果没有，就尝试一下是否能获取到锁，如果获取成功，则标记为已经被占用
+- `hasQueuedPredecessors()`用来查看队列中是否有比它等待时间更久的线程，如果没有，就尝试一下是否能获取到锁，如果获取成功，则标记为已经被占用
 
 ##### addWaiter()
 ```java
@@ -134,7 +134,7 @@ protected final boolean tryAcquire(int acquires) {
         return node;
     }
 ```
-创建一个入队node为当前线程，Node.EXCLUSIVE 是独占锁,Node.SHARED是共享锁。
+创建一个入队node为当前线程，参数`Node.EXCLUSIVE` 表示是独占锁，`Node.SHARED`是共享锁。
 
 ##### acquireQueued()
 ```java
