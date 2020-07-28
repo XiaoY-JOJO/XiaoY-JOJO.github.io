@@ -9,7 +9,7 @@
 title: 铁锤的IT奇妙探险
 brief-intro: Java Back-End Coder
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://www.xiaoyi.site/" # the base hostname & protocol for your site
+url: "https://xiaoy-jojo.github.io/" # the base hostname & protocol for your site
 
 permalink: /:year/:month/:day/:title/
 
