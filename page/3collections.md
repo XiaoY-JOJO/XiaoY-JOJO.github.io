@@ -12,6 +12,8 @@ type: page
 
 [Spring AOP详解](https://www.cnblogs.com/joy99/p/10941543.html)
 
+[适配器模式](https://blog.csdn.net/wwwdc1012/article/details/82780560)
+
 * content
 {:toc}
 
