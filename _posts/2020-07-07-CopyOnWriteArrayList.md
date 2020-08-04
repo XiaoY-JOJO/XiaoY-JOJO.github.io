@@ -35,32 +35,21 @@ CopyOnWriteArrayList好像很“冷门”，但它的应用其实很广泛，是
 * 描述： 演示CopyOnWriteArrayList迭代期间可以修改集合的内容
 */
 public class CopyOnWriteArrayListDemo {
-    public static void main(String[] args) {
- 
-        CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>(new Integer[]{1, 2, 3});
- 
-        System.out.println(list); //[1, 2, 3]
- 
-        //Get iterator 1
-        Iterator<Integer> itr1 = list.iterator();
- 
-        //Add one element and verify list is updated
-        list.add(4);
- 
-        System.out.println(list); //[1, 2, 3, 4]
- 
-        //Get iterator 2
-        Iterator<Integer> itr2 = list.iterator();
- 
-        System.out.println("====Verify Iterator 1 content====");
- 
-        itr1.forEachRemaining(System.out::println); //1,2,3
- 
-        System.out.println("====Verify Iterator 2 content====");
- 
-        itr2.forEachRemaining(System.out::println); //1,2,3,4
- 
-    } 
+	public static void main(String[] args)	
+		CopyOnWriteArrayList<Integer>	t = new CopyOnWriteArrayList<>	 Integer[]{1, 2, 3});	
+		System.out.println(list); //[1, 2, 3]	
+		//Get iterator 1
+		Iterator<Integer> itr1 = list.iterator();	
+		//Add one element and verify list is updated
+		list.add(4);	
+		System.out.println(list); //[1, 2, 3,] 	
+		//Get iterator 2
+		Iterator<Integer> itr2 = list.iterator();
+		System.out.println("====Verify Iterator 1 content====");	
+		itr1.forEachRemaining(System.out::println); //1,2,3	
+		System.out.println("====Verify Iterator 2 content====");	
+		itr2.forEachRemaining(System.out::println); //1,2,3	
+	} 
 }
 ```
 
@@ -82,17 +71,17 @@ final transient ReentrantLock lock = new ReentrantLock();
 private transient volatile Object[] array;
  
 final Object[] getArray() {
-    return array;
+	return array;
 }
  
 //将原容器的引用指向新容器
 final void setArray(Object[] a) {
-    array = a;
+	array = a;
 }
 
 //初始化CopyOnWriteArrayList相当于初始化数组
 public CopyOnWriteArrayList() {
-    setArray(new Object[0]);
+	setArray(new Object[0]);
 }
 ```
 
@@ -100,27 +89,23 @@ public CopyOnWriteArrayList() {
 
 ```java
 public boolean add(E e) {
-    // 加锁
-    final ReentrantLock lock = this.lock;
-    lock.lock();
-    try {
- 
-        // 得到原数组的长度和元素
-        Object[] elements = getArray();
-        int len = elements.length;
- 
-        // 复制出一个新数组
-        Object[] newElements = Arrays.copyOf(elements, len + 1);
- 
-        // 添加时，将新元素添加到新数组中
-        newElements[len] = e;
- 
-        // 将volatile Object[] array 的指向替换成新数组
-        setArray(newElements);
-        return true;
-    } finally {
-        lock.unlock();
-    }
+	// 加锁
+	final ReentrantLock lock = this.lock;
+	lock.lock();
+	try	
+		// 得到原数组的长度和元素
+		Object[] elements = getArray();
+		int len = elements.lengt	
+		// 复制出一个新数组
+		Object[] newElements = Arrays.copyOf(elements, len + 1	
+		// 添加时，将新元素添加到新数组中
+		newElements[len] = 	
+		// 将volatile Object[] array 的指向替换成新数组
+		setArray(newElements);
+		return true;
+	} finally {
+		lock.unlock();
+	}
 }
 ```
 
@@ -155,13 +140,13 @@ public E set(int index, E element) {
 ```java
 //一共包含了两个重载和getArray，都没有加锁
 public E get(int index) {
-    return get(getArray(), index);
+	return get(getArray(), index);
 }
 final Object[] getArray() {
-    return array;
+	return array;
 }
 private E get(Object[] a, int index) {
-    return (E) a[index];
+	return (E) a[index];
 }
 
 ```
@@ -169,16 +154,16 @@ private E get(Object[] a, int index) {
 
 ```java
 private COWIterator(Object[] elements, int initialCursor) {
-    cursor = initialCursor;
-    snapshot = elements;
+	cursor = initialCursor;
+	snapshot = elements;
 }
 //迭代器在被构建的时候，会把当时的 elements 赋值给 snapshot，而之后的迭代器所有的操作都基于 snapshot 数组进行的
 
 //比如next()
 public E next() {
-    if (! hasNext())
-        throw new NoSuchElementException();
-    return (E) snapshot[cursor++];
+	if (! hasNext())
+		throw new NoSuchElementException();
+	return (E) snapshot[cursor++];
 }
 
 ```

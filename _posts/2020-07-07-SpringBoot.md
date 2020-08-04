@@ -17,8 +17,10 @@ tags: Java Spring 源码解析
 
 ## SpringBoot
 ### 特性
+以下提出来的特性都是针对Spring而言的优点。
 
-1. 更快速的构建能力：SpringBoot提供了更多的`Starters`用于快速构建业务框架，它包含了一系列可以集成到应用里面的依赖包，只需要一个依赖项就可以来启动和运行Web应用程序。
+#### 更快速的构建能力
+SpringBoot提供了更多的`Starters`用于快速构建业务框架，它包含了一系列可以集成到应用里面的依赖包，只需要一个依赖项就可以来启动和运行Web应用程序，以简化构建和复杂的应用程序配置。
 
 ```java
 <dependency>
@@ -33,9 +35,11 @@ tags: Java Spring 源码解析
 - spring-boot-starter-data-jpa
 
 
-2. 起步依赖：在创建 Spring Boot 时可以直接勾选依赖模块，这样在项目初始化时就会把相关依赖直接添加到项目中，大大缩短了查询并添加依赖的时间。
+#### 起步依赖
+在创建 Spring Boot 时可以直接勾选依赖模块，这样在项目初始化时就会把相关依赖直接添加到项目中，大大缩短了查询并添加依赖的时间。
 
-3. 内嵌容器支持：Spring Boot 内嵌了 Tomcat、Jetty、Undertow 三种容器，其默认嵌入的容器是 Tomcat
+#### 内嵌容器支持
+Spring Boot 内嵌了`Tomcat`、`Jetty`、`Undertow`三种容器，其默认嵌入的容器是 Tomcat。
 
 ```java
 <dependency>
@@ -57,12 +61,21 @@ tags: Java Spring 源码解析
 
 ```
 
-4. `Actuator`监控：主要用于提供对应用程序监控，以及控制的能力，比如监控应用程序的运行状况，或者内存、线程池、Http请求统计等，同时还提供了关闭应用程序等功能。
+#### `Actuator`监控
+主要用于提供对应用程序监控，以及控制的能力，比如监控应用程序的运行状况，或者内存、线程池、Http请求统计等，同时还提供了关闭应用程序等功能。
 
 ![](/images/actor.png)
 
 ### 启动流程
-Spring Boot 程序的入口是 SpringApplication.run(Application.class, args) 方法
+Spring Boot可以直接`main`函数启动，嵌入式web服务器，避免了应用程序部署的复杂性。程序的入口是使用`@SpringBootApplication`注释的类中的`SpringApplication.run(Application.class, args)` 方法。
+```java
+@SpringBootApplication 
+public class Application { 
+    public static void main(String[] args) { 
+        SpringApplication.run(Application.class, args); 
+    } 
+} 
+```
 
 ```java
 public ConfigurableApplicationContext run(String... args) {

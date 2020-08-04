@@ -30,95 +30,92 @@ ConcurrentHashMap的原理，与HashMap、HashTable的区别，ConcurrentHashMap
 
 ```java
 final V putVal(K key, V value, boolean onlyIfAbsent) {
-    if (key == null || value == null) {
-        throw new NullPointerException();
-    }
-    //计算 hash 值
-    int hash = spread(key.hashCode());
-    int binCount = 0;
-    for (Node<K, V>[] tab = table; ; ) {
-        Node<K, V> f;
-        int n, i, fh;
-
-        //如果数组是空的，就进行初始化
-        if (tab == null || (n = tab.length) == 0) {
-            tab = initTable();
-        }
-        // 找该 hash 值对应的数组下标
-        else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) {
-            //如果该位置是空的，就用 CAS 的方式放入新值
-            if (casTabAt(tab, i, null,
-                    new Node<K, V>(hash, key, value, null))) {
-                break;
-            }
-        }
-        //hash值等于 MOVED 代表在扩容
-        else if ((fh = f.hash) == MOVED) {
-            tab = helpTransfer(tab, f);
-        }
-        //槽点上是有值的情况
-        else {
-            V oldVal = null;
-
-            //用 synchronized 锁住当前槽点，保证并发安全
-            synchronized (f) {
-                if (tabAt(tab, i) == f) {
-                    //如果是链表的形式
-                    if (fh >= 0) {
-                        binCount = 1;
-                        //遍历链表
-                        for (Node<K, V> e = f; ; ++binCount) {
-                            K ek;
-                            //如果发现该 key 已存在，就判断是否需要进行覆盖，然后返回
-                            if (e.hash == hash &&
-                                    ((ek = e.key) == key ||
-                                            (ek != null && key.equals(ek)))) {
-                                oldVal = e.val;
-                                if (!onlyIfAbsent) {
-                                    e.val = value;
-                                }
-                                break;
-                            }
-                            Node<K, V> pred = e;
-
-                            //到了链表的尾部也没有发现该 key，说明之前不存在，就把新值添加到链表的最后
-                            if ((e = e.next) == null) {
-                                pred.next = new Node<K, V>(hash, key,
-                                        value, null);
-                                break;
-                            }
-                        }
-                    }
-                    //如果是红黑树的形式
-                    else if (f instanceof TreeBin) {
-                        Node<K, V> p;
-                        binCount = 2;
-                        //调用 putTreeVal 方法往红黑树里增加数据
-                        if ((p = ((TreeBin<K, V>) f).putTreeVal(hash, key,
-                                value)) != null) {
-                            oldVal = p.val;
-                            if (!onlyIfAbsent) {
-                                p.val = value;
-                            }
-                        }
-                    }
-                }
-            }
-            if (binCount != 0) {
-                //检查是否满足条件并把链表转换为红黑树的形式，默认的 TREEIFY_THRESHOLD 阈值是 8
-                if (binCount >= TREEIFY_THRESHOLD) {
-                    treeifyBin(tab, i);
-                }
-                //putVal 的返回是添加前的旧值，所以返回 oldVal
-                if (oldVal != null) {
-                    return oldVal;
-                }
-                break;
-            }
-        }
-    }
-    addCount(1L, binCount);
-    return null;
+	if (key == null || value == null) {
+		throw new NullPointerException();
+	}
+	//计算 hash 值
+	int hash = spread(key.hashCode());
+	int binCount = 0;
+	for (Node<K, V>[] tab = table; ; ) {
+		Node<K, V> f;
+		int n, i, 	
+		//如果数组是空的，就进行初始化
+		if (tab == null || (n = tab.length) == 0) {
+			tab = initTable();
+		}
+		// 找该 hash 值对应的数组下标
+		else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) {
+			//如果该位置是空的，就用 CAS 的方式放入新值
+			if (casTabAt(tab, i, null,
+			        new Node<K, V>(hash, key, value, null))) {
+				break;
+			}
+		}
+		//hash值等于 MOVED 代表在扩容
+		else if ((fh = f.hash) == MOVED) {
+		    tab = helpTransfer(tab, f);
+		}
+		//槽点上是有值的情况
+		else {
+			V oldVal = nu	
+			//用 synchronized 锁住当前槽点，保证并发安全
+			synchronized (f) {
+				if (tabAt(tab, i) == f) {
+					//如果是链表的形式
+					if (fh >= 0) {
+						binCount = 1;
+						//遍历链表
+						for (Node<K, V> e = f; ; ++binCount) {
+							K ek;
+						   	该 key 已存在，就判断是否需要进行覆盖，然后返回
+		                	if (e.hash == hash &&
+		                	        ((ek = e.key) == key ||
+		                	                (ek != null && key.equals(		
+	                    		oldVal = e.val;
+	                    	    if (!onlyIfAbsent) {
+	                    	        e.val = value;
+	                    	    }
+	                    	    break;
+	                    	}
+	                    	Node<K, V> pred =	
+	                    	//到了链表的尾部也没有发现该 key，说明	在，就把新值添加	最后
+	                    	if ((e = e.next) == null) {
+	                    	    pred.next = new Node<K, V>(hash, key,
+	                    	            value, null);
+	                    	    break;
+	                    	}
+	                    }
+	                }
+	                //如果是红黑树的形式
+	                else if (f instanceof TreeBin) {
+	                    Node<K, V> p;
+	                    binCount = 2;
+	                    //调用 putTreeVal 方法往红黑树里增加数据
+	                    if ((p = ((TreeBin<K, V>) f).putTreeVal(hash,	,
+	                            value)) != null) {
+	                        oldVal = p.val;
+	                        if (!onlyIfAbsent) {
+	                            p.val = value;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        if (binCount != 0) {
+	            //检查是否满足条件并把链表转换为红黑树的形式，默认的 T	FY_THRESHOLD 阈值是 8
+	            if (binCount >= TREEIFY_THRESHOLD) {
+	                treeifyBin(tab, i);
+	            }
+	            //putVal 的返回是添加前的旧值，所以返回 oldVal
+	            if (oldVal != null) {
+	                return oldVal;
+	            }
+	            break;
+	        }
+	    }
+	}
+	addCount(1L, binCount);
+	return null;
 }
 
 ```
